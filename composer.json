@@ -1,0 +1,17 @@
+{
+    "name": "usuario/proyectoskills",
+    "autoload": {
+        "psr-4": {
+            "Usuario\\Proyectoskills\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Miguel",
+            "email": "miguelrodriguezdevv@gmail.com"
+        }
+    ],
+    "require": {
+        "twig/twig": "^3.20"
+    }
+}
