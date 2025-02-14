@@ -34,7 +34,7 @@ class Database{
             $capsule->bootEloquent();
 
         } catch (\Throwable $th) {
-        
+
             die("Error Processing Request --DB CONNECTION");
         
         }

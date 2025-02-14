@@ -18,10 +18,10 @@ class Router
 
     public function loadRoutes(){
 
-        $this->routes['GET']['/']  = ['controller' => 'ControllerPublic', 'action' => 'index'];
+        $this->routes['GET']['/']  = ['controller' => '\\public\\ControllerPublic', 'action' => 'index'];
 
         $this->routes['GET']['/{id}']  = [
-            'controller' => 'ControllerPublic',
+            'controller' => '\\public\\ControllerPublic',
             'action' => 'indexParametro',
             'middlewares' => ['MiddlewareAuth' => ['loginArea', 'notLoginArea']]
         ];
@@ -53,7 +53,7 @@ class Router
 
         if (isset($this->routes[$method][$path])) {
             $route = $this->routes[$method][$path];
-            $controllerClass = 'App\\controllers\\' . $route['controller'];
+            $controllerClass = 'App\\controllers' . $route['controller'];
             error_log($controllerClass);
             $action = $route['action'];
             $middlewares = $route['middlewares'] ?? null;
@@ -84,10 +84,12 @@ class Router
                 } else {
                     $controller->$action();
                 }
+            
             } else {
                 http_response_code(404);
                 echo '404';
             }
+
         } else {
             http_response_code(404);
             echo '404';

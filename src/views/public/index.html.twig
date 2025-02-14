@@ -1,6 +1,10 @@
+{% extends './common/layout.html.twig' %}
+
+{% block content %}
 <h1>Proyecto Skills</h1>
 <ul>
     {% for user in users %}
         <li>{{ user }}</li>
     {% endfor %}
 </ul>
+{% endblock %}
