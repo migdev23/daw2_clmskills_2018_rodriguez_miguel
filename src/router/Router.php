@@ -59,7 +59,6 @@ class Router
             $middlewares = $route['middlewares'] ?? null;
 
             if (class_exists($controllerClass) && method_exists($controllerClass, $action)) {
-
                 if (isset($middlewares) && count($middlewares) > 0) {
                     foreach ($middlewares as $controllerMid => $actionsMid) {
                         $controllerMidClass = 'App\\middlewares\\' . $controllerMid;
@@ -67,13 +66,16 @@ class Router
                             $controllerMiddleware = new $controllerMidClass();
                             foreach ($actionsMid as $actionMid) {
                                 if (method_exists($controllerMidClass, $actionMid)) {
-                                    $controllerMiddleware->$actionMid();
+                                    if ($paramValue !== null) {
+                                        $controllerMiddleware->$actionMid($paramValue);
+                                    } else {
+                                        $controllerMiddleware->$actionMid();
+                                    }
                                 }
                             }
                         }
                     }
                 }
-
 
                 $controller = new $controllerClass();
 
