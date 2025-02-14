@@ -16,23 +16,21 @@ class Router
         $this->loadRoutes();
     }
 
-    public function loadRoutes()
-    {
+    public function loadRoutes(){
 
         $this->routes['GET']['/']  = ['controller' => 'ControllerPublic', 'action' => 'index'];
 
-        // $this->routes['GET']['/{id}']  = [
-        //     'controller' => 'ControllerPublic',
-        //     'action' => 'indexParametro',
-        //     'middlewares' => ['MiddlewareAuth' => ['loginArea', 'notLoginArea']]
-        // ];
+        $this->routes['GET']['/{id}']  = [
+            'controller' => 'ControllerPublic',
+            'action' => 'indexParametro',
+            'middlewares' => ['MiddlewareAuth' => ['loginArea', 'notLoginArea']]
+        ];
+
     }
 
 
-    public function handleRequest()
-    {
+    public function handleRequest(){
 
-        //$parsedUrl = parse_url($_SERVER['REQUEST_URI']);
         $method = $_SERVER['REQUEST_METHOD'];
 
         $path = rtrim(parse_url($_SERVER['REQUEST_URI'])['path'], '/');
