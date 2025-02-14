@@ -8,4 +8,9 @@
         protected $primaryKey = 'uid';
         public $timestamps = false;
         protected $fillable = ['uid', 'email', 'nombre', 'password', 'perfil'];
+
+        public function imagenes(){
+            return $this->belongsToMany(Imagenes::class, 'imagenes_usuarios', 'uid', 'iid');
+        }
+        
     }

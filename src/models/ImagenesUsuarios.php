@@ -3,8 +3,8 @@
 
     use Illuminate\Database\Eloquent\Model;
 
-    class ImagenesCategoria extends Model{
-        protected $table = 'imagenes_categorias';
+    class ImagenesUsuarios extends Model{
+        protected $table = 'imagenes_usuarios';
         public $timestamps = false;
-        protected $fillable = ['imagen', 'imagen_relacionada'];
+        protected $fillable = ['iid', 'uid'];
     }

@@ -19,12 +19,13 @@ class Router
     public function loadRoutes(){
 
         $this->routes['GET']['/']  = ['controller' => '\\public\\ControllerPublic', 'action' => 'index'];
-
-        $this->routes['GET']['/{id}']  = [
-            'controller' => '\\public\\ControllerPublic',
-            'action' => 'indexParametro',
-            'middlewares' => ['MiddlewareAuth' => ['loginArea', 'notLoginArea']]
-        ];
+        $this->routes['GET']['/imagen/{id}']  = ['controller' => '\\public\\ControllerPublic', 'action' => 'verImagen'];
+       
+        // $this->routes['GET']['/{id}']  = [
+        //     'controller' => '\\public\\ControllerPublic',
+        //     'action' => 'indexParametro',
+        //     'middlewares' => ['MiddlewareAuth' => ['loginArea', 'notLoginArea']]
+        // ];
 
     }
 
@@ -41,15 +42,13 @@ class Router
 
         if (is_numeric(end($parts))) {
             $paramValue = array_pop($parts);
-            $path = '/' . implode('/', $parts) . '{id}';
+            $path = '/' . implode('/', $parts) . '/{id}';
         }
-
 
         if ($path == '') {
             $path = '/';
         }
 
-        error_log($path . ':' . $method);
 
         if (isset($this->routes[$method][$path])) {
             $route = $this->routes[$method][$path];
@@ -78,7 +77,6 @@ class Router
                 }
 
                 $controller = new $controllerClass();
-
                 if ($paramValue !== null) {
                     $controller->$action($paramValue);
                 } else {
