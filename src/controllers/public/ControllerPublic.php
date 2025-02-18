@@ -26,7 +26,6 @@
             }
             
             $this->twig->addGlobal('logeado', isset($_SESSION['logeado']) ? $_SESSION['logeado'] : null);
-            exit;
         }
 
         public function index(){
