@@ -4,7 +4,7 @@
 <h1>Proyecto Skills</h1>
 <ul>
     {% for user in users %}
-        <li>{{ user.nombre }}</li>
+        <li>{{ user.email }}</li>
          <img src="/imagen/{{ user.uid }}" alt="Imagen de {{ user.nombre }}">
     {% endfor %}
 </ul>

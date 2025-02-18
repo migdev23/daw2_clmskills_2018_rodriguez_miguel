@@ -5,11 +5,24 @@
     class MiddlewareAuth{
 
         public function loginArea(){
-            error_log('Login Area');
+            
+            session_start();
+
+            if(!isset($_SESSION['logeado'])){
+                header('Location: /login');
+                exit;
+            }
+
         }
 
         public function notLoginArea(){
-            error_log('not login Area');
+            session_start();
+
+            if(isset($_SESSION['logeado'])){
+                header('Location: /profile');
+                exit;
+            }
+
         }
 
     }

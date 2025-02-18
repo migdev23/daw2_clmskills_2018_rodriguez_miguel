@@ -1,10 +1,14 @@
 <?php
 
     namespace App\controllers\public;
+
     use Twig\Loader\FilesystemLoader;
+
     use Twig\Environment;
+
     use App\models\Database;
-    use App\models\Usuarios;
+
+    use App\models\Usuario;
 
     class ControllerPublic {
 
@@ -12,30 +16,32 @@
         private $db;
 
         public function __construct(){
+            $this->db = new Database();
+            
             $loader = new FilesystemLoader(__DIR__ . '/../../views');
             $this->twig = new Environment($loader);
-            $this->db = new Database();
+            
+            if (session_status() == PHP_SESSION_NONE) {
+                session_start();
+            }
+            
+            $this->twig->addGlobal('logeado', isset($_SESSION['logeado']) ? $_SESSION['logeado'] : null);
+            exit;
         }
 
         public function index(){
-            $users = Usuarios::select('uid','nombre')->get();
+            $users = Usuario::select('uid','email')->get();
             echo $this->twig->render('/public/index.html.twig', ['users' => $users]);
             exit;
         }
 
         public function verImagen($id) {
             
-            $user = Usuarios::find($id);
+            $user = Usuario::find($id);
         
             if ($user && $user->perfil) {
                 header('Content-Type: image/jpeg');
-                
                 echo $user->perfil;
-
-                // foreach ($user->imagenes as $img => $binImg) {
-                //     echo $binImg;
-                // }
-            
                 exit;
             }
 
@@ -47,5 +53,3 @@
         }
 
     }
-
-

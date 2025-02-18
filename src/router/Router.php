@@ -1,9 +1,5 @@
 <?php
-
 namespace App\Routes;
-
-use App\controllers\ControllerPublic;
-use App\middlewares\MiddlewareAuth;
 
 class Router
 {
@@ -18,19 +14,39 @@ class Router
 
     public function loadRoutes(){
 
-        $this->routes['GET']['/']  = ['controller' => '\\public\\ControllerPublic', 'action' => 'index'];
-        $this->routes['GET']['/imagen/{id}']  = ['controller' => '\\public\\ControllerPublic', 'action' => 'verImagen'];
-       
-        // $this->routes['GET']['/{id}']  = [
-        //     'controller' => '\\public\\ControllerPublic',
-        //     'action' => 'indexParametro',
-        //     'middlewares' => ['MiddlewareAuth' => ['loginArea', 'notLoginArea']]
-        // ];
+        $this->routes['GET']['/'] = ['controller' => '\\public\\ControllerPublic', 'action' => 'index'];
+
+        $this->routes['GET']['/imagen/{id}'] = ['controller' => '\\public\\ControllerPublic', 'action' => 'verImagen'];
+
+        $this->routes['GET']['/login'] = [
+            'controller' => '\\public\\auth\\ControllerAuth', 
+            'action' => 'loginPage',
+            'middlewares' => ['MiddlewareAuth' => ['notLoginArea']]
+        ];
+
+        $this->routes['POST']['/login'] = [
+            'controller' => '\\public\\auth\\ControllerAuth', 
+            'action' => 'loginAccess',
+            'middlewares' => ['MiddlewareAuth' => ['notLoginArea']]
+        ];
+
+        $this->routes['GET']['/profile'] = [
+            'controller' => '\\user\\ControllerUser', 
+            'action' => 'profilePage', 
+            'middlewares' => ['MiddlewareAuth' => ['loginArea']]
+        ];
+
+        $this->routes['GET']['/logout'] = [
+            'controller' => '\\public\\auth\\ControllerAuth', 
+            'action' => 'logout',
+            'middlewares' => ['MiddlewareAuth' => ['loginArea']]
+        ];
+
 
     }
 
-
-    public function handleRequest(){
+    public function handleRequest()
+    {
 
         $method = $_SERVER['REQUEST_METHOD'];
 
@@ -42,19 +58,18 @@ class Router
 
         if (is_numeric(end($parts))) {
             $paramValue = array_pop($parts);
-            $path = '/' . implode('/', $parts) . '/{id}';
+            $path       = '/' . implode('/', $parts) . '/{id}';
         }
 
         if ($path == '') {
             $path = '/';
         }
 
-
         if (isset($this->routes[$method][$path])) {
-            $route = $this->routes[$method][$path];
+            $route           = $this->routes[$method][$path];
             $controllerClass = 'App\\controllers' . $route['controller'];
             error_log($controllerClass);
-            $action = $route['action'];
+            $action      = $route['action'];
             $middlewares = $route['middlewares'] ?? null;
 
             if (class_exists($controllerClass) && method_exists($controllerClass, $action)) {
@@ -82,7 +97,7 @@ class Router
                 } else {
                     $controller->$action();
                 }
-            
+
             } else {
                 http_response_code(404);
                 echo '404';
