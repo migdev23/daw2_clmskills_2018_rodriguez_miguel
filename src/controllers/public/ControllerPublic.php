@@ -9,6 +9,7 @@
     use App\models\Database;
 
     use App\models\Usuario;
+    use App\models\Imagen;
 
     class ControllerPublic {
 
@@ -30,7 +31,8 @@
 
         public function index(){
             $users = Usuario::select('uid','email')->get();
-            echo $this->twig->render('/public/index.html.twig', ['users' => $users]);
+            $imgs = Imagen::select('titulo')->get();
+            echo $this->twig->render('/public/index.html.twig', ['imgs' => $imgs]);
             exit;
         }
 

@@ -9,7 +9,7 @@ class Database{
     private $dotenv;
 
     public function __construct(){   
-        $this->dotenv = Dotenv::createImmutable(__DIR__ . '/../');
+        $this->dotenv = Dotenv::createImmutable(__DIR__ . '/../../');
         $this->dotenv->load();
 
         try {
