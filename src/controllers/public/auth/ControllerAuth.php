@@ -59,7 +59,7 @@
 
             session_destroy();
 
-            echo 'Has cerrado sesion';
+            header('Location: /');
             exit;
         }
 

@@ -2,7 +2,8 @@
 
     namespace App\controllers\public;
 
-    use Twig\Loader\FilesystemLoader;
+use App\Models\Categoria;
+use Twig\Loader\FilesystemLoader;
 
     use Twig\Environment;
 
@@ -30,13 +31,14 @@
         }
 
         public function index(){
-            $users = Usuario::select('uid','email')->get();
-            $imgs = Imagen::select('titulo')->get();
-            echo $this->twig->render('/public/index.html.twig', ['imgs' => $imgs]);
+            $imgs = Imagen::with(['usuarios', 'categorias'])->get();
+            $categories = Categoria::all();
+            $authors = Usuario::all();
+            echo $this->twig->render('/public/index.html.twig', ['imgs' => $imgs, 'categories' => $categories, 'authors' => $authors]);
             exit;
         }
 
-        public function verImagen($id) {
+        public function viewPhotoProfileUid($id) {
             
             $user = Usuario::find($id);
         
@@ -44,6 +46,22 @@
                 header('Content-Type: image/jpeg');
                 echo $user->perfil;
                 exit;
+            }else{
+                echo 'No se encontro la img';
+            }
+
+        }
+
+        public function viewImageIid($id) {
+            
+            $img = Imagen::find($id);
+        
+            if ($img && $img->fichero) {
+                header('Content-Type: image/jpeg');
+                echo $img->fichero;
+                exit;
+            }else{
+                echo 'No se encontro la img';
             }
 
         }

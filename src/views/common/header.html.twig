@@ -2,7 +2,10 @@
   <div class="container-fluid">
     <a href='/' class="navbar-brand">Skills 2018</a>
     {% if logeado %}
-    <a href="/logout" class="btn btn-danger">Cerrar Sesión</a>
+    <div>
+      <a href="/profile" class="btn btn-primary">Perfil</a>
+      <a href="/logout" class="btn btn-danger">Cerrar Sesión</a>
+    </div>
     {% else %}
       <a href='/login' class="btn btn-primary">Iniciar Sesion</a>
     {% endif %}

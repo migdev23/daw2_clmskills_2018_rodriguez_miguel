@@ -20,7 +20,6 @@ class Categoria extends Model {
      * Se usa la tabla pivot `imagenes_categorias`.
      */
     public function imagenes() {
-        // belongsToMany indica la relación N:M con Imagen
         return $this->belongsToMany(
             Imagen::class,               // Modelo relacionado
             'imagenes_categorias',        // Nombre de la tabla pivot

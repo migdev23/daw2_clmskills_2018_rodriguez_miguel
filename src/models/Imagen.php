@@ -15,10 +15,7 @@ class Imagen extends Model {
     // Campos que se pueden asignar masivamente
     protected $fillable = ['titulo', 'descripcion', 'fichero', 'latitud', 'longitud'];
 
-    /**
-     * Relación Muchos a Muchos con Categorias.
-     * Una imagen puede pertenecer a varias categorías.
-     */
+
     public function categorias() {
         // Relación N:M con Categorias a través de `imagenes_categorias`
         return $this->belongsToMany(
@@ -29,10 +26,7 @@ class Imagen extends Model {
         );
     }
 
-    /**
-     * Relación Muchos a Muchos con Usuarios.
-     * Una imagen puede ser subida por varios usuarios (ej: colaboraciones).
-     */
+
     public function usuarios() {
         // Relación N:M con Usuarios usando `imagenes_usuarios`
         return $this->belongsToMany(
@@ -42,11 +36,7 @@ class Imagen extends Model {
             'uid'                         // Clave foránea en pivot hacia Usuarios
         );
     }
-
-    /**
-     * Relación Muchos a Muchos con otras Imagenes.
-     * Esto modela las imágenes relacionadas entre sí.
-     */
+    
     public function relacionadas() {
         // Relación recursiva N:M en la misma tabla a través de `imagenes_relacionadas`
         return $this->belongsToMany(

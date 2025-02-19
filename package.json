@@ -1,0 +1,17 @@
+{
+  "name": "daw2_clmskills_2018_rodriguez_miguel",
+  "version": "1.0.0",
+  "description": "Proyecto CLM Skills 2018",
+  "scripts": {
+    "build": "tsc",
+    "start": "npm run build && composer start",
+    "dev": "concurrently --kill-others --kill-others-on-fail​​ --raw \"npm run watch\" \"composer start\"",
+    "watch": "tsc --watch",
+    "clean": "rm -rf public/dist"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
+

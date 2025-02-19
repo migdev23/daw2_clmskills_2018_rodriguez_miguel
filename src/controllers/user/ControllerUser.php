@@ -2,13 +2,14 @@
 
     namespace App\controllers\user;
 
-    use Twig\Loader\FilesystemLoader;
+use App\Models\Categoria;
+use Twig\Loader\FilesystemLoader;
 
     use Twig\Environment;
 
     use App\models\Database;
-
-    use App\models\Usuario;
+use App\Models\Imagen;
+use App\models\Usuario;
 
     class ControllerUser {
 
@@ -29,9 +30,17 @@
             $this->twig->addGlobal('logeado', isset($_SESSION['logeado']) ? $_SESSION['logeado'] : null);
         }
 
+
         public function profilePage(){
-            $usuario = Usuario::find($_SESSION['logeado']);
-            echo $this->twig->render('/user/profile.html.twig', ['user' => $usuario]);
+    
+            $imgs = Imagen::with(['usuarios', 'categorias'])
+            ->whereHas('usuarios', function($query) {
+                $query->where('usuarios.uid', $_SESSION['logeado']);
+            })->get();
+            
+            $user = Usuario::find($_SESSION['logeado']);
+
+            echo $this->twig->render('/user/profile.html.twig', ['imgs' => $imgs, 'user' => $user]);
             exit;
         }
 

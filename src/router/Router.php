@@ -16,7 +16,8 @@ class Router
 
         $this->routes['GET']['/'] = ['controller' => '\\public\\ControllerPublic', 'action' => 'index'];
 
-        $this->routes['GET']['/imagen/{id}'] = ['controller' => '\\public\\ControllerPublic', 'action' => 'verImagen'];
+        $this->routes['GET']['/imgProfile/{id}'] = ['controller' => '\\public\\ControllerPublic', 'action' => 'viewPhotoProfileUid'];
+        $this->routes['GET']['/imgIid/{id}'] = ['controller' => '\\public\\ControllerPublic', 'action' => 'viewImageIid'];
 
         $this->routes['GET']['/login'] = [
             'controller' => '\\public\\auth\\ControllerAuth', 
