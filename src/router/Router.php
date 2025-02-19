@@ -56,6 +56,12 @@ class Router
             'middlewares' => ['MiddlewareAuth' => ['loginArea']]
         ];
 
+        $this->routes['POST']['/deletePhoto'] = [
+            'controller' => '\\user\\ControllerUser', 
+            'action' => 'deletePhoto',
+            'middlewares' => ['MiddlewareAuth' => ['loginArea']]
+        ];
+
     }
 
     public function handleRequest()

@@ -9,6 +9,8 @@ use Twig\Loader\FilesystemLoader;
 
     use App\models\Database;
 use App\Models\Imagen;
+use App\Models\ImagenesCategorias;
+use App\Models\ImagenesRelacionadas;
 use App\Models\ImagenesUsuarios;
 use App\models\Usuario;
 
@@ -78,9 +80,36 @@ use App\models\Usuario;
             $imagenUsuario->uid = $_SESSION['logeado'];
             $imagenUsuario->save();
 
-            echo 'Imagen creada correctamente ';
+            header('Location: /profile');
+            exit;
         }
 
 
+        public function deletePhoto(){
+            
+            try {
+        
+                ImagenesRelacionadas::where('imagen', $_POST['iid'])->delete();
+                ImagenesRelacionadas::where('imagen_relacionada', $_POST['iid'])->delete();
+
+        
+                ImagenesCategorias::where('iid', $_POST['iid'])->delete();
+            
+
+                ImagenesUsuarios::where('iid', $_POST['iid'])
+                    ->where('uid', $_SESSION['logeado'])
+                    ->delete();
+            
+                Imagen::where('iid', $_POST['iid'])->delete();
+            
+                echo json_encode(['status' => 'success']);
+            } catch (\Exception $th) {
+                error_log($th->getMessage());
+                echo json_encode(['status' => 'unSuccess']);
+            }
+            
+            
+            exit;
+        }
 
     }
