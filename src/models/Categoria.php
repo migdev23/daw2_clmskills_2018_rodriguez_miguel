@@ -14,6 +14,8 @@ class Categoria extends Model {
     // Campos que se pueden asignar masivamente
     protected $fillable = ['nombre'];
 
+    public $timestamps = false;
+
     /**
      * Relación Muchos a Muchos con Imagenes.
      * Una categoría puede tener muchas imágenes y una imagen puede pertenecer a muchas categorías.

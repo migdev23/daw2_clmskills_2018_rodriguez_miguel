@@ -44,6 +44,18 @@ class Router
         ];
 
 
+        $this->routes['GET']['/newPhoto'] = [
+            'controller' => '\\user\\ControllerUser', 
+            'action' => 'newPhotoPage',
+            'middlewares' => ['MiddlewareAuth' => ['loginArea']]
+        ];
+
+        $this->routes['POST']['/newPhoto'] = [
+            'controller' => '\\user\\ControllerUser', 
+            'action' => 'newPhoto',
+            'middlewares' => ['MiddlewareAuth' => ['loginArea']]
+        ];
+
     }
 
     public function handleRequest()

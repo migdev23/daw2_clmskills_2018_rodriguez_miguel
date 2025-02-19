@@ -9,6 +9,7 @@ use Twig\Loader\FilesystemLoader;
 
     use App\models\Database;
 use App\Models\Imagen;
+use App\Models\ImagenesUsuarios;
 use App\models\Usuario;
 
     class ControllerUser {
@@ -43,5 +44,43 @@ use App\models\Usuario;
             echo $this->twig->render('/user/profile.html.twig', ['imgs' => $imgs, 'user' => $user]);
             exit;
         }
+
+
+        public function newPhotoPage(){
+            echo $this->twig->render('/user/newPhoto.html.twig');
+            exit;
+        }
+
+
+        public function newPhoto(){
+
+            $titulo = $_POST['titulo'];
+            $descripcion = $_POST['descripcion'];
+            $imagen = $_FILES['fichero'];
+            $imagenBinaria = file_get_contents($imagen['tmp_name']);        
+            $latitud = $_POST['latitud'];
+            $longitud = $_POST['longitud'];
+            
+
+    
+
+            $nuevaImagen = new Imagen();
+            $nuevaImagen->titulo = $titulo;
+            $nuevaImagen->descripcion = $descripcion;
+            $nuevaImagen->fichero = $imagenBinaria;
+            $nuevaImagen->latitud = $latitud;
+            $nuevaImagen->latitud = $longitud;
+            $nuevaImagen->save();
+            $iid = $nuevaImagen->iid;
+            
+            $imagenUsuario = new ImagenesUsuarios();
+            $imagenUsuario->iid = $iid;
+            $imagenUsuario->uid = $_SESSION['logeado'];
+            $imagenUsuario->save();
+
+            echo 'Imagen creada correctamente ';
+        }
+
+
 
     }

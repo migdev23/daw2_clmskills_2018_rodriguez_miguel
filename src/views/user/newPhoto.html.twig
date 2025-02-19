@@ -1,0 +1,36 @@
+{% extends './common/layout.html.twig' %}
+
+{% block content %}
+<h1>Nueva foto</h1>
+<hr>
+<form action="/newPhoto" method="POST" enctype="multipart/form-data">
+
+    <div class="mb-3">
+        <label for="titulo" class="form-label">Título</label>
+        <input type="text" class="form-control" id="titulo" name="titulo" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="descripcion" class="form-label">Descripción</label>
+        <textarea class="form-control" id="descripcion" name="descripcion" rows="4" required></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label for="fichero" class="form-label">Fichero</label>
+        <input type="file" class="form-control" id="fichero" name="fichero" required>
+    </div>
+
+
+    <div class="mb-3">
+        <label for="latitud" class="form-label">Latitud</label>
+        <input type="text" class="form-control" id="latitud" name="latitud" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="longitud" class="form-label">Longitud</label>
+        <input type="text" class="form-control" id="longitud" name="longitud" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Enviar</button>
+</form>
+{% endblock %}

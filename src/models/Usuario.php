@@ -13,6 +13,8 @@ class Usuario extends Model {
 
     protected $fillable = ['email', 'nombre', 'password', 'perfil'];
 
+    public $timestamps = false;
+
     public function imagenes() {
         return $this->belongsToMany(
             Imagen::class,          

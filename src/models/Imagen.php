@@ -15,6 +15,7 @@ class Imagen extends Model {
     // Campos que se pueden asignar masivamente
     protected $fillable = ['titulo', 'descripcion', 'fichero', 'latitud', 'longitud'];
 
+    public $timestamps = false;
 
     public function categorias() {
         // Relación N:M con Categorias a través de `imagenes_categorias`
@@ -28,7 +29,6 @@ class Imagen extends Model {
 
 
     public function usuarios() {
-        // Relación N:M con Usuarios usando `imagenes_usuarios`
         return $this->belongsToMany(
             Usuario::class,               // Modelo relacionado
             'imagenes_usuarios',           // Nombre de la tabla pivot
