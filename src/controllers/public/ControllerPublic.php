@@ -2,8 +2,8 @@
 
     namespace App\controllers\public;
 
-use App\Models\Categoria;
-use Twig\Loader\FilesystemLoader;
+    use App\Models\Categoria;
+    use Twig\Loader\FilesystemLoader;
 
     use Twig\Environment;
 
@@ -31,13 +31,35 @@ use Twig\Loader\FilesystemLoader;
         }
 
         public function index(){
-            $imgs = Imagen::with(['usuarios', 'categorias'])->get();
+            
+            $limit = 10;
+            $page = isset($_GET['page']) && is_numeric($_GET['page']) && (int) $_GET['page'] > 0 ? (int) $_GET['page'] : 1;
+
+            
+            $offset = ($page - 1) * $limit;
+        
+            $totalImgs = Imagen::count();
+            $totalPages = ceil($totalImgs / $limit);
+        
+            $imgs = Imagen::with(['usuarios', 'categorias'])
+                        ->limit($limit)
+                        ->offset($offset)
+                        ->get();
+        
             $categories = Categoria::all();
             $authors = Usuario::all();
-            echo $this->twig->render('/public/index.html.twig', ['imgs' => $imgs, 'categories' => $categories, 'authors' => $authors]);
+        
+            echo $this->twig->render('/public/index.html.twig', [
+                'imgs' => $imgs,
+                'categories' => $categories,
+                'authors' => $authors,
+                'totalPages' => $totalPages,
+                'currentPage' => $page
+            ]);
             exit;
         }
-
+        
+        
         public function viewPhotoProfileUid($id) {
             
             $user = Usuario::find($id);
