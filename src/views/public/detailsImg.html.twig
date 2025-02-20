@@ -1,0 +1,66 @@
+{% extends './common/layout.html.twig' %}
+
+{% block content %}
+    <h1>Detalles de la Imagen</h1>
+
+    <div class="card shadow-sm">
+        <img src="/imgIid/{{ img.iid }}" width="500" height="500" class="card-img-top" alt="Imagen de {{ img.titulo }}">
+        <div class="card-body">
+            <h5 class="card-title">{{ img.titulo }}</h5>
+            <p class="card-text">{{ img.descripcion }}</p>
+
+            <!-- Mostrar el autor/es -->
+            <div class="mt-3">
+                <h6>Autor/es:</h6>
+                <ul>
+                    {% for usuario in img.usuarios %}
+                        <li>{{ usuario.nombre }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Mostrar las categorías -->
+            <div class="mt-3">
+                <h6>Categorías:</h6>
+                <ul>
+                    {% for categoria in img.categorias %}
+                        <li>{{ categoria.nombre }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+   
+    <div class='row mb-4'>
+        <h2 class="mt-5">Mapa</h2>
+        <iframe
+            width="300"
+            height="350"
+            style="border:0;"
+            src="https://www.openstreetmap.org/export/embed.html?bbox={{ img.longitud - 0.01 }}%2C{{ img.latitud - 0.01 }}%2C{{ img.longitud + 0.01 }}%2C{{ img.latitud + 0.01 }}&amp;layer=mapnik"
+            allowfullscreen="">
+        </iframe>
+    </div>
+
+  
+    {% if relacionadas %}
+        <h2 class="mt-5">Imágenes Relacionadas</h2>
+        <div class="row mb-4">
+            {% for img_rel in relacionadas %}
+                <div class="col-md-4">
+                    <div class="card shadow-sm">
+                        <img src="/imgIid/{{ img_rel.iid }}" width='200px'  height='200px' class="card-img-top" alt="{{ img_rel.titulo }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ img_rel.titulo }}</h5>
+                            <p class="card-text">{{ img_rel.descripcion }}</p>
+                            <a href="/details/{{ img_rel.iid }}" class="btn btn-secondary">Ver detalles</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-muted mt-3">No hay imágenes relacionadas.</p>
+    {% endif %}
+{% endblock %}

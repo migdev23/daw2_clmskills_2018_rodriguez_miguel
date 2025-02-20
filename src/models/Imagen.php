@@ -20,20 +20,20 @@ class Imagen extends Model {
     public function categorias() {
         // Relación N:M con Categorias a través de `imagenes_categorias`
         return $this->belongsToMany(
-            Categoria::class,             // Modelo relacionado
-            'imagenes_categorias',         // Nombre de la tabla pivot
-            'iid',                        // Clave foránea en pivot hacia Imagenes
-            'cid'                         // Clave foránea en pivot hacia Categorias
+            Categoria::class,         
+            'imagenes_categorias',      
+            'iid',                      
+            'cid'                         
         );
     }
 
 
     public function usuarios() {
         return $this->belongsToMany(
-            Usuario::class,               // Modelo relacionado
-            'imagenes_usuarios',           // Nombre de la tabla pivot
-            'iid',                        // Clave foránea en pivot hacia Imagenes
-            'uid'                         // Clave foránea en pivot hacia Usuarios
+            Usuario::class,              
+            'imagenes_usuarios',        
+            'iid',                     
+            'uid'                        
         );
     }
     

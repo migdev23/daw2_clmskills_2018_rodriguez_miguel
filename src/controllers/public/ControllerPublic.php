@@ -72,9 +72,23 @@
 
         }
 
-        public function indexParametro($param){
-            echo $this->twig->render('/public/index.html.twig');
+        public function detailsImage($id){
+            $img = 
+            Imagen::with([
+                'usuarios:uid,nombre',
+                'categorias:cid,nombre',
+                'relacionadas'
+            ])
+            ->find($id)
+            ;
+        
+            echo $this->twig->render('/public/detailsImg.html.twig', [
+                'img' => $img,
+                'relacionadas' => $img->relacionadas,
+                'author' => $img->usuarios
+            ]);
             exit;
         }
+        
 
     }

@@ -34,7 +34,7 @@ function renderImages(imgs: any[]) {
                                 }
                             </small>
                         </p>
-
+                        <a href="/details/${imagen.iid}" class="btn btn-secondary">Ver detalles</a>
                     </div>
                 </div>
             </div>
