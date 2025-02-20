@@ -1,16 +1,20 @@
 "use strict";
 class ImageGallery {
     constructor(apiUrl) {
+        const urlParams = new URLSearchParams(window.location.search);
         this.apiUrl = apiUrl;
         this.currentPage = 1;
-        this.category = '';
-        this.author = '';
+        this.category = urlParams.get('category') ?? '';
+        this.author = urlParams.get('author') ?? '';
+        this.title = urlParams.get('title') ?? '';
+        const pageLimitParam = urlParams.get('pageLimit');
+        this.limitPage = pageLimitParam !== null ? parseInt(pageLimitParam) : 6;
         document.addEventListener("DOMContentLoaded", () => this.fetchImages(this.currentPage));
         this.addPaginationEventListeners();
     }
     async fetchImages(page) {
         try {
-            const response = await fetch(`${this.apiUrl}?page=${page}&category=${this.category}&author=${this.author}`);
+            const response = await fetch(`${this.apiUrl}?page=${page}&category=${this.category}&author=${this.author}&title=${this.title}&pageLimit=${this.limitPage}`);
             const data = await response.json();
             console.log(data);
             this.renderImages(data.imgs);
@@ -73,7 +77,7 @@ class ImageGallery {
             paginationContainer.addEventListener("click", (event) => {
                 const target = event.target;
                 if (target && target.dataset.page) {
-                    const page = parseInt(target.dataset.page, 10);
+                    const page = parseInt(target.dataset.page);
                     this.changePage(page);
                 }
             });
@@ -86,6 +90,8 @@ document.querySelectorAll('.author').forEach(authorElement => {
         const author = authorElement.getAttribute('data-author') || "";
         gallery.author = author;
         gallery.currentPage = 1;
+        gallery.limitPage = 6;
+        gallery.title = '';
         gallery.fetchImages(gallery.currentPage);
         document.querySelectorAll('.author').forEach(item => item.classList.remove('bg-primary', 'text-white'));
         authorElement.classList.add('bg-primary', 'text-white');
@@ -96,6 +102,8 @@ document.querySelectorAll('.category').forEach(categoryElement => {
         const category = categoryElement.getAttribute('data-category') || "";
         gallery.category = category;
         gallery.currentPage = 1;
+        gallery.limitPage = 6;
+        gallery.title = '';
         gallery.fetchImages(gallery.currentPage);
         document.querySelectorAll('.category').forEach(item => item.classList.remove('bg-primary', 'text-white'));
         categoryElement.classList.add('bg-primary', 'text-white');
@@ -105,6 +113,8 @@ document.querySelector('#deleteFilter')?.addEventListener('click', () => {
     gallery.category = "";
     gallery.author = "";
     gallery.currentPage = 1;
+    gallery.limitPage = 6;
+    gallery.title = '';
     document.querySelectorAll('.category').forEach(item => item.classList.remove('bg-primary', 'text-white'));
     document.querySelectorAll('.author').forEach(item => item.classList.remove('bg-primary', 'text-white'));
     gallery.fetchImages(gallery.currentPage);
