@@ -33,10 +33,11 @@ class Database{
 
             $capsule->bootEloquent();
 
-        } catch (\Throwable $th) {
+            $capsule->getConnection()->getPdo();
 
-            die("Error Processing Request --DB CONNECTION");
-        
+        } catch (\Exception $th) {
+            echo 'No hay conexion a la base de datos';
+            exit;
         }
 
     }

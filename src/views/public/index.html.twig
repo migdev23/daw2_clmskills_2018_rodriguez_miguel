@@ -8,16 +8,18 @@
         <h4 class="mb-3">Categorías</h4>
         <ul class="list-group mb-4">
             {% for cat in categories %}
-                <li class="list-group-item">{{ cat.nombre }}</li>
+                <li class="list-group-item category" data-category='{{ cat.nombre }}'>{{ cat.nombre }}</li>
             {% endfor %}
         </ul>
 
         <h4 class="mb-3">Autores</h4>
         <ul class="list-group">
             {% for author in authors %}
-                <li class="list-group-item">{{ author.nombre }}</li>
+                <li class="list-group-item author" data-author='{{ author.nombre }}'>{{ author.nombre }}</li>
             {% endfor %}
         </ul>
+
+        <button id='deleteFilter' class='btn btn-secondary my-3'>x Eliminar filtros</button>
     </div>
 
     <div class='col-9'>
