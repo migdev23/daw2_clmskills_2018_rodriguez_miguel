@@ -62,6 +62,11 @@ class Router
             'middlewares' => ['MiddlewareAuth' => ['loginArea']]
         ];
 
+        $this->routes['GET']['/api/imgs'] = [
+            'controller' => '\\api\\ImagenesApi', 
+            'action' => 'imgs'
+        ];
+
     }
 
     public function handleRequest()
@@ -111,6 +116,7 @@ class Router
                 }
 
                 $controller = new $controllerClass();
+
                 if ($paramValue !== null) {
                     $controller->$action($paramValue);
                 } else {
@@ -118,11 +124,13 @@ class Router
                 }
 
             } else {
+               
                 http_response_code(404);
                 echo '404';
             }
 
         } else {
+         
             http_response_code(404);
             echo '404';
         }

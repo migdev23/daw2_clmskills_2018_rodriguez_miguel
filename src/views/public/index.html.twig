@@ -3,87 +3,31 @@
 {% block content %}
 <h1>Inicio</h1>
 
-
-
 <div class="row">
     <div class='col-3'>
-       <h4 class="mb-3"> Categorías</h4>
-    <ul class="list-group mb-4">
-        {% for cat in categories %}
-            <li class="list-group-item list-group-item-action d-flex align-items-center">
-                {{ cat.nombre }}
-            </li>
-        {% endfor %}
-    </ul>
+        <h4 class="mb-3">Categorías</h4>
+        <ul class="list-group mb-4">
+            {% for cat in categories %}
+                <li class="list-group-item">{{ cat.nombre }}</li>
+            {% endfor %}
+        </ul>
 
-    <!-- Autores -->
-    <h4 class="mb-3"> Autores </h4>
-    <ul class="list-group">
-        {% for author in authors %}
-            <li class="list-group-item list-group-item-action d-flex align-items-center">
-                {{ author.nombre }}
-            </li>
-        {% endfor %}
-    </ul>
+        <h4 class="mb-3">Autores</h4>
+        <ul class="list-group">
+            {% for author in authors %}
+                <li class="list-group-item">{{ author.nombre }}</li>
+            {% endfor %}
+        </ul>
     </div>
 
-   <div class='row col-9'>
-    {% for imagen in imgs %}
-        <div class='col-4 mb-3'>
-            <div class="card shadow-sm">
-                <img src="/imgIid/{{ imagen.iid }}" width="100%" height="200" class="card-img-top" alt="Imagen de {{ imagen.titulo }}">
-                
-                <div class="card-body">
-                 
-                    <h5 class="card-title">{{ imagen.titulo }}</h5>
-                    
-                
-                    <p class="card-text text-muted">Autor: 
-                    {% for usuario in imagen.usuarios %}
-                            {{ usuario.nombre }}
-                    {% endfor %}
-                    </p>
-                    
-                  
-                    <p class="card-text">{{ description }}</p>
-            
-                    <p class="card-text">
-                        <small class="text-muted">Categorías: 
-                        {% for categoria in imagen.categorias %}
-                            {{ categoria.nombre }}
-                        {% endfor %}
-                        </small>
-                    </p>
-                </div>
-            </div>
-        </div>
-    {% endfor %}
+    <div class='col-9'>
+        <div id="images-container" class="row"></div>
 
-       <nav>
-            <ul class="pagination">
-                {% if currentPage > 1 %}
-                    <li class="page-item">
-                        <a class="page-link" href="?page={{ currentPage - 1 }}">Anterior</a>
-                    </li>
-                {% endif %}
-
-                {% for i in 1..totalPages %}
-                    <li class="page-item {% if i == currentPage %}active{% endif %}">
-                        <a class="page-link" href="?page={{ i }}">{{ i }}</a>
-                    </li>
-                {% endfor %}
-
-                {% if currentPage < totalPages %}
-                    <li class="page-item">
-                        <a class="page-link" href="?page={{ currentPage + 1 }}">Siguiente</a>
-                    </li>
-                {% endif %}
-            </ul>
+        <nav>
+            <ul id="pagination" class="pagination"></ul>
         </nav>
-
-   </div>
-
+    </div>
 </div>
 
+<script src="/dist/index.js"></script>
 {% endblock %}
-
