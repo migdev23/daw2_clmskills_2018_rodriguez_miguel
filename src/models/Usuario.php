@@ -24,8 +24,4 @@ class Usuario extends Model {
         );
     }
 
-    public function setPasswordAttribute($value) {
-        $this->attributes['password'] = sha1($value);
-    }
-
 }

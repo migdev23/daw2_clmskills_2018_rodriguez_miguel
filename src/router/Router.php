@@ -33,6 +33,19 @@ class Router
             'middlewares' => ['MiddlewareAuth' => ['notLoginArea']]
         ];
 
+        $this->routes['GET']['/register'] = [
+            'controller' => '\\public\\auth\\ControllerAuth', 
+            'action' => 'registerPage',
+            'middlewares' => ['MiddlewareAuth' => ['notLoginArea']]
+        ];
+
+        $this->routes['POST']['/register'] = [
+            'controller' => '\\public\\auth\\ControllerAuth', 
+            'action' => 'registerCreate',
+            'middlewares' => ['MiddlewareAuth' => ['notLoginArea']]
+        ];
+
+
         $this->routes['GET']['/profile'] = [
             'controller' => '\\user\\ControllerUser', 
             'action' => 'profilePage', 

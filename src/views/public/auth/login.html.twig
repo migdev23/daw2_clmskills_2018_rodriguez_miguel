@@ -1,12 +1,7 @@
 {% extends './common/layout.html.twig' %}
 
 {% block content %}
-                <div class="col-md-6">
-                    <div class="card mt-5">
-                        <div class="card-header text-center">
-                            <h2>Iniciar Sesión</h2>
-                        </div>
-                        <div class="card-body">
+                            <h1>Login</h1>
                             <form action="/login" method="post">
                                 <div class="mb-3">
                                     <label for="email" class="form-label">Email:</label>
@@ -18,10 +13,6 @@
                                 </div>
                                 <button type="submit" class="btn btn-primary w-100">Iniciar Sesión</button>
                             </form>
-                        </div>
-                        <div class="card-footer text-center">
-                            <small>¿No tienes una cuenta? <a href="/registro">Regístrate</a></small>
-                        </div>
-                    </div>
-                </div>
+                            <a href='/register'>Registrate aqui</a>
+
 {% endblock %}

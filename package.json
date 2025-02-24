@@ -5,7 +5,7 @@
   "scripts": {
     "build": "tsc",
     "start": "npm run build && composer start",
-    "dev": "concurrently --kill-others --kill-others-on-fail​​ --raw \"npm run watch\" \"composer start\"",
+    "dev": "concurrently --kill-others --kill-others-on-fail --raw \"npm run watch\" \"composer config --global process-timeout 3600 && composer start\"",
     "watch": "tsc --watch",
     "clean": "rm -rf public/dist"
   },
