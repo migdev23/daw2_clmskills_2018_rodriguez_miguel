@@ -1,0 +1,29 @@
+Aspectos a mejor en las próximas soluciones realizadas con TS:
+
+Del index.ts
+============
+
+- Usar HTMLElement | null cuando se seleccionan elementos del DOM.
+- Evitar el uso de any y usar Interfaces.
+    Por ejemplo: const data = await response.json();
+                imgs: any[]
+                ...
+- Los método async es mejor que indiquen que devuelven : Promise<void>
+- Los métod que devuelvan void también se van a indciar.
+- Hay que  mirar los if (!response.ok). Si response.ok es falso creo que fetch() no detendrá la ejecución del código ni activará el catch.
+
+
+- Revisar esto:
+this.limitPage = pageLimitParam !== null ? parseInt(pageLimitParam) : 6;
+
+¿Puede parseInt devolver NAN?
+
+
+Del profileUser.ts
+=================
+
+- El btnsDelete es de tipo NodeListOf<HTMLElement>
+- Si tienes el event es mejor obtener el elemento que realmente disparó el evento
+    const target = event.currentTarget as HTMLElement;
+    const iid = target.getAttribute('iid');
+- try / cathc mejor por si el servidor devuelve un error. En index sí lo tenías.
