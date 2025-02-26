@@ -3,6 +3,7 @@
 namespace App\controllers\api;
 use App\models\Database;
 use App\models\Imagen;
+use App\Models\Usuario;
 
 class ImagenesApi {
     private $db;
@@ -52,6 +53,38 @@ class ImagenesApi {
         ]);
         exit;
     }
+
+
+    public function imgsProfile(){
+        header('Content-Type: application/json');
+    
+        $limit = 6;
+        
+        $page = isset($_GET['page']) && is_numeric($_GET['page']) && (int) $_GET['page'] > 0 ? (int) $_GET['page'] : 1;
+        $offset = ($page - 1) * $limit;
+
+        $totalImgs = Usuario::find($_SESSION['logeado'])->imagenes()->count();
+        
+        $totalPages = ($totalImgs > 0) ? ceil($totalImgs / $limit) : 1;
+        
+        $imgs = Usuario::find($_SESSION['logeado'])->imagenes()
+            ->select('imagenes.iid','imagenes.titulo', 'imagenes.descripcion', 'imagenes.latitud', 'imagenes.longitud')
+            ->limit($limit)
+            ->offset($offset)
+            ->get()
+            ->toArray();
+    
+
+        echo json_encode([
+            'imgs' => $imgs,
+            'totalImgs' => $totalImgs,
+            'totalPages' => $totalPages,
+            'currentPage' => $page
+        ]);
+        exit;
+    }
+
+    
     
 
 }

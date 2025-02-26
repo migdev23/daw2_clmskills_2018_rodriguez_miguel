@@ -35,12 +35,21 @@
             $email = $_POST['email'];
 
             $password = $_POST['password'];
+            
+            $mantenerSesion = $_POST['mantenerSesion'];
+
 
             $usuario = Usuario::where('email', $email)->first();
 
             if ($usuario && sha1($password) === $usuario->password) {
 
                 $_SESSION['logeado'] = $usuario->uid;
+
+                if($mantenerSesion == 'on'){
+                    $_SESSION['sesionActive'] = true;
+                }else{
+                    $_SESSION['sesionActive'] = false;
+                }
 
                 header('Location: /profile');
 
@@ -132,6 +141,20 @@
             session_destroy();
 
             header('Location: /');
+
+            exit;
+        }
+
+        public function logoutClosePage() {
+            
+            if($_SESSION['sesionActive'] == false){
+                session_unset();
+
+                session_destroy();
+
+                header('Location: /');
+            }
+            
             exit;
         }
 
