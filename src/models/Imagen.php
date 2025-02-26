@@ -27,7 +27,6 @@ class Imagen extends Model {
         );
     }
 
-
     public function usuarios() {
         return $this->belongsToMany(
             Usuario::class,              
@@ -37,13 +36,19 @@ class Imagen extends Model {
         );
     }
     
-    public function relacionadas() {
-        // Relación recursiva N:M en la misma tabla a través de `imagenes_relacionadas`
-        return $this->belongsToMany(
-            Imagen::class,                 // Modelo relacionado (auto-relación)
-            'imagenes_relacionadas',        // Tabla pivot
-            'imagen',                      // Clave foránea en pivot hacia Imagen principal
-            'imagen_relacionada'            // Clave foránea en pivot hacia Imagen relacionada
-        );
+    public function relacionadas(){
+        $imagenId = $this->iid;
+
+        return Imagen::whereIn('iid', function ($query) use ($imagenId) {
+            $query->select('imagen_relacionada')
+                ->from('imagenes_relacionadas')
+                ->where('imagen', $imagenId);
+        })
+        ->orWhereIn('iid', function ($query) use ($imagenId) {
+            $query->select('imagen')
+                ->from('imagenes_relacionadas')
+                ->where('imagen_relacionada', $imagenId);
+        })
+        ->get();
     }
 }

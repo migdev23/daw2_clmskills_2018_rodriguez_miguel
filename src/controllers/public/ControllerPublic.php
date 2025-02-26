@@ -73,22 +73,23 @@
         }
 
         public function detailsImage($id){
-            $img = 
-            Imagen::with([
-                'usuarios:uid,nombre',
-                'categorias:cid,nombre',
-                'relacionadas'
-            ])
-            ->find($id)
-            ;
         
+            $img = Imagen::with([
+                'usuarios:uid,nombre',
+                'categorias:cid,nombre'
+            ])->find($id);
+
+        
+            $relacionadas = $img->relacionadas();
+
             echo $this->twig->render('/public/detailsImg.html.twig', [
                 'img' => $img,
-                'relacionadas' => $img->relacionadas,
+                'relacionadas' => $relacionadas,
                 'author' => $img->usuarios
             ]);
+            
             exit;
         }
-        
+
 
     }

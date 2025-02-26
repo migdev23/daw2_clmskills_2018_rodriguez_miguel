@@ -59,6 +59,13 @@ class Router
         ];
 
 
+        $this->routes['GET']['/logoutCloseNavegation'] = [
+            'controller' => '\\public\\auth\\ControllerAuth', 
+            'action' => 'logoutClosePage',
+            'middlewares' => ['MiddlewareAuth' => ['loginArea']]
+        ];
+
+
         $this->routes['GET']['/newPhoto'] = [
             'controller' => '\\user\\ControllerUser', 
             'action' => 'newPhotoPage',
@@ -80,6 +87,12 @@ class Router
         $this->routes['GET']['/api/imgs'] = [
             'controller' => '\\api\\ImagenesApi', 
             'action' => 'imgs'
+        ];
+
+        $this->routes['GET']['/api/imgsProfile'] = [
+            'controller' => '\\api\\ImagenesApi', 
+            'action' => 'imgsProfile',
+            'middlewares' => ['MiddlewareAuth' => ['loginArea']]
         ];
 
     }
