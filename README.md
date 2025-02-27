@@ -1,7 +1,7 @@
 ﻿# daw2_clmskills_2018_rodriguez_miguel
 
 composer config --global process-timeout 3600     
-
+(teniendo el .env en la raiz del proyecto)
 (1) Instalacion de paquetes php:
 composer install (instala depencias)
 
