@@ -31,34 +31,43 @@
         }
 
         public function loginAccess (){
+            try {
 
-            $email = $_POST['email'];
-
-            $password = $_POST['password'];
-            
-            $mantenerSesion = $_POST['mantenerSesion'];
-
-
-            $usuario = Usuario::where('email', $email)->first();
-
-            if ($usuario && sha1($password) === $usuario->password) {
-
-                $_SESSION['logeado'] = $usuario->uid;
-
-                if($mantenerSesion == 'on'){
-                    $_SESSION['sesionActive'] = true;
-                }else{
-                    $_SESSION['sesionActive'] = false;
+                if (!isset($_POST['email']) || !isset($_POST['password'])) {
+                    echo "Todos los campos son obligatorios.";
+                    exit;
                 }
 
-                header('Location: /profile');
+                $email = $_POST['email'];
 
-            } else {
-                echo "Credenciales incorrectas.";
+                $password = $_POST['password'];
+                
+                $mantenerSesion = $_POST['mantenerSesion'];
+    
+                $usuario = Usuario::where('email', $email)->first();
+    
+                if ($usuario && sha1($password) === $usuario->password) {
+    
+                    $_SESSION['logeado'] = $usuario->uid;
+    
+                    if($mantenerSesion == 'on'){
+                        $_SESSION['sesionActive'] = true;
+                    }else{
+                        $_SESSION['sesionActive'] = false;
+                    }
+    
+                    header('Location: /profile');
+    
+                } else {
+                    echo "Credenciales incorrectas.";
+                }
+
+                echo $this->twig->render('public/auth/login.html.twig');
+                exit;
+            } catch (\Exception $th) {
+                header('Location: /');
+                exit;
             }
-
-            echo $this->twig->render('public/auth/login.html.twig');
-            exit;
         }
 
         public function registerPage(){
@@ -68,95 +77,102 @@
 
 
         public function registerCreate() {
+            try {
+                
+                    if (
+                        !isset($_POST['email'], $_FILES['perfil'], $_POST['nombre'], $_POST['password']) || 
+                        empty(trim($_POST['email'])) || 
+                        empty(trim($_POST['nombre'])) || 
+                        empty(trim($_POST['password'])) ||
+                        $_FILES['perfil']['error'] > 0
+                    ) {
+                        echo "Error: Faltan campos obligatorios.";
+                        exit;
+                    }
+                
 
-            if (
-                !isset($_POST['email'], $_FILES['perfil'], $_POST['nombre'], $_POST['password']) || 
-                empty(trim($_POST['email'])) || 
-                empty(trim($_POST['nombre'])) || 
-                empty(trim($_POST['password'])) ||
-                $_FILES['perfil']['error'] > 0
-            ) {
-                echo "Error: Faltan campos obligatorios.";
-                exit;
-            }
-        
+                    $email = trim($_POST['email']);
+                    $nombre = trim($_POST['nombre']);
+                    $password = trim($_POST['password']);
+                    $imagen = $_FILES['perfil'];
+                
+                
+                    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                        echo "Error: El email no es válido.";
+                        exit;
+                    }
+                
 
-            $email = trim($_POST['email']);
-            $nombre = trim($_POST['nombre']);
-            $password = trim($_POST['password']);
-            $imagen = $_FILES['perfil'];
-        
-        
-            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                echo "Error: El email no es válido.";
-                exit;
-            }
-        
-
-            if (Usuario::where('email', $email)->exists()) {
-                echo "Error: El correo ya está registrado.";
-                exit;
-            }
+                    if (Usuario::where('email', $email)->exists()) {
+                        echo "Error: El correo ya está registrado.";
+                        exit;
+                    }
 
 
-            if (Usuario::where('nombre', $nombre)->exists()) {
-                echo "Error: Autor (nombre) ya registreado";
-                exit;
-            }
-        
+                    if (Usuario::where('nombre', $nombre)->exists()) {
+                        echo "Error: Autor (nombre) ya registreado";
+                        exit;
+                    }
+                
 
-            $extension = strtolower(pathinfo($imagen['name'], PATHINFO_EXTENSION));
-            if ($extension !== 'jpg' && $extension !== 'jpeg') {
-                echo "Error: La imagen debe ser formato JPG.";
-                exit;
-            }
-        
-            $imagenBinaria = file_get_contents($imagen['tmp_name']);
-        
-    
-            $usuario = new Usuario();
-            $usuario->email = $email;
-            $usuario->nombre = $nombre;
-            $usuario->password = sha1($password);
-            $usuario->perfil = $imagenBinaria; 
-        
-            if ($usuario->save()) {
-                $_SESSION['logeado'] = $usuario->uid;
-                $_SESSION['sesionActive'] = true;
-                header('Location: /profile');
-                exit;
-            } else {
-                echo "Error: No se pudo registrar el usuario.";
+                    $extension = strtolower(pathinfo($imagen['name'], PATHINFO_EXTENSION));
+                    if ($extension !== 'jpg' && $extension !== 'jpeg') {
+                        echo "Error: La imagen debe ser formato JPG.";
+                        exit;
+                    }
+                
+                    $imagenBinaria = file_get_contents($imagen['tmp_name']);
+                
+            
+                    $usuario = new Usuario();
+                    $usuario->email = $email;
+                    $usuario->nombre = $nombre;
+                    $usuario->password = sha1($password);
+                    $usuario->perfil = $imagenBinaria; 
+                
+                    if ($usuario->save()) {
+                        $_SESSION['logeado'] = $usuario->uid;
+                        $_SESSION['sesionActive'] = true;
+                        header('Location: /profile');
+                        exit;
+                    } else {
+                        echo "Error: No se pudo registrar el usuario.";
+                        exit;
+                    }
+            } catch (\Exception $th) {
+                header('Location: /');
                 exit;
             }
         }
-        
-        
-        
 
-        
         public function logout() {
-            
-            session_unset();
-
-            session_destroy();
-
-            header('Location: /');
-
-            exit;
-        }
-
-        public function logoutClosePage() {
-            
-            if($_SESSION['sesionActive'] == false){
+            try {
                 session_unset();
 
                 session_destroy();
 
                 header('Location: /');
+
+                exit;
+            } catch (\Exception $th) {
+                exit;
             }
-            
-            exit;
+        }
+
+        public function logoutClosePage() {
+            try {
+                if($_SESSION['sesionActive'] == false){
+                    session_unset();
+
+                    session_destroy();
+
+                    header('Location: /');
+                }
+                
+                exit;
+            } catch (\Exception $th) {
+                exit;
+            }
         }
 
 }
