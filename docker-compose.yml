@@ -1,0 +1,18 @@
+services:
+  php-app:
+    build: 
+      context: .
+      dockerfile: Dockerfile.yml
+    tty: true
+    ports:
+      - 3333:8000
+
+    command: bash -c "cd /app && composer start"
+
+
+  mariadb:
+    image: mariadb:11
+    tty: true
+    environment:
+      - MYSQL_USER=root
+      - MYSQL_ROOT_PASSWORD=root

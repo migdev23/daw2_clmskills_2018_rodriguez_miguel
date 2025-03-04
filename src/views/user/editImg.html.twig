@@ -1,0 +1,37 @@
+{% extends './common/layout.html.twig' %}
+
+{% block content %}
+<h1>Editar Imagen</h1>
+<form action="/editImage/{{ img.iid }}" class="mb-3" method="POST" enctype="multipart/form-data">
+    
+    <img src="/imgIid/{{ img.iid }}" width="500" height="500" class="card-img-top mb-3" alt="Imagen de {{ img.titulo }}">
+
+    <div class="mb-3">
+        <label for="titulo" class="form-label">Título</label>
+        <input type="text" class="form-control" id="titulo" name="titulo" value="{{img.titulo}}">
+    </div>
+
+    <div class="mb-3">
+        <label for="descripcion" class="form-label">Descripción</label>
+        <textarea class="form-control" id="descripcion" name="descripcion" rows="4">{{img.descripcion}}</textarea>
+    </div>
+
+    <div class="mb-3">
+        <label for="fichero" class="form-label">Fichero</label>
+        <input type="file" class="form-control" id="fichero" name="fichero">
+    </div>
+
+
+    <div class="mb-3">
+        <label for="latitud" class="form-label">Latitud</label>
+        <input type="text" class="form-control" id="latitud" name="latitud" value="{{img.latitud}}">
+    </div>
+
+    <div class="mb-3">
+        <label for="longitud" class="form-label">Longitud</label>
+        <input type="text" class="form-control" id="longitud" name="longitud" value="{{img.longitud}}">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Enviar</button>
+</form>
+{% endblock %}

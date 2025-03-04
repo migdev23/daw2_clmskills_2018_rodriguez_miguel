@@ -122,6 +122,7 @@
         
             if ($usuario->save()) {
                 $_SESSION['logeado'] = $usuario->uid;
+                $_SESSION['sesionActive'] = true;
                 header('Location: /profile');
                 exit;
             } else {

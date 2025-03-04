@@ -79,14 +79,27 @@
                 'categorias:cid,nombre'
             ])->find($id);
 
-        
-            $relacionadas = $img->relacionadas();
+            if($img){
+                $mia = false;
 
-            echo $this->twig->render('/public/detailsImg.html.twig', [
-                'img' => $img,
-                'relacionadas' => $relacionadas,
-                'author' => $img->usuarios
-            ]);
+                foreach ($img->usuarios as $key => $value) {
+                    $autorUid = $value->uid;
+                    if(isset($_SESSION['logeado']) && $autorUid == $_SESSION['logeado']){
+                        $mia = true;
+                    }
+                }
+    
+                $relacionadas = $img->relacionadas();
+    
+                echo $this->twig->render('/public/detailsImg.html.twig', [
+                    'img' => $img,
+                    'relacionadas' => $relacionadas,
+                    'author' => $img->usuarios,
+                    'mia'=>$mia
+                ]);
+            }else{
+                header('Location: /');
+            }
             
             exit;
         }

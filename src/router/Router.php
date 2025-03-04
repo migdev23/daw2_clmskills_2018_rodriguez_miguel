@@ -17,10 +17,23 @@ class Router
         $this->routes['GET']['/'] = ['controller' => '\\public\\ControllerPublic', 'action' => 'index'];
 
         $this->routes['GET']['/imgProfile/{id}'] = ['controller' => '\\public\\ControllerPublic', 'action' => 'viewPhotoProfileUid'];
+
         $this->routes['GET']['/imgIid/{id}'] = ['controller' => '\\public\\ControllerPublic', 'action' => 'viewImageIid'];
 
         $this->routes['GET']['/details/{id}'] = ['controller' => '\\public\\ControllerPublic', 'action' => 'detailsImage'];
         
+        $this->routes['GET']['/editImage/{id}'] = [
+            'controller' => '\\user\\ControllerUser', 
+            'action' => 'editImagePage',
+            'middlewares' => ['MiddlewareAuth' => ['loginArea']]
+        ];
+
+        $this->routes['POST']['/editImage/{id}'] = [
+            'controller' => '\\user\\ControllerUser', 
+            'action' => 'editImage',
+            'middlewares' => ['MiddlewareAuth' => ['loginArea']]
+        ];
+
         $this->routes['GET']['/login'] = [
             'controller' => '\\public\\auth\\ControllerAuth', 
             'action' => 'loginPage',

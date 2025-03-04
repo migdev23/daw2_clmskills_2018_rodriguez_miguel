@@ -11,23 +11,28 @@
             currentPage = page;
             const container = document.querySelector('#imgsProfile');
             container.innerHTML = "";
-            data.imgs.forEach((imagen) => {
-                const card = `
-                    <div class='col-4 mb-3'>
-                        <div class="card shadow-sm">
-                            <img src="/imgIid/${imagen.iid}" width="100%" height="200" class="card-img-top" alt="Imagen de ${imagen.titulo}">
-
-                            <div class="card-body">
-                                <h5 class="card-title">${imagen.titulo}</h5>
-                                <p class="card-text">${imagen.descripcion}</p>
-                                <button class='btn btn-danger btnDeletePhoto' data-iid='${imagen.iid}'>Eliminar Foto</button>
-                                <a class='btn btn-secondary' href='/details/${imagen.iid}'>Ver detalles</a>
+            if (data.imgs.length > 0) {
+                data.imgs.forEach((imagen) => {
+                    const card = `
+                        <div class='col-4 mb-3'>
+                            <div class="card shadow-sm">
+                                <img src="/imgIid/${imagen.iid}" width="100%" height="200" class="card-img-top" alt="Imagen de ${imagen.titulo}">
+    
+                                <div class="card-body">
+                                    <h5 class="card-title">${imagen.titulo}</h5>
+                                    <p class="card-text">${imagen.descripcion}</p>
+                                    <button class='btn btn-danger btnDeletePhoto' data-iid='${imagen.iid}'>Eliminar Foto</button>
+                                    <a class='btn btn-secondary' href='/details/${imagen.iid}'>Ver detalles</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                `;
-                container.innerHTML += card;
-            });
+                    `;
+                    container.innerHTML += card;
+                });
+            }
+            else {
+                container.innerHTML = `<div class='col-4 mb-3'>No se encontraron fotografias..</div>`;
+            }
             btnDelete();
             paginacion();
         }
