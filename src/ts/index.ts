@@ -1,3 +1,24 @@
+interface Usuario {
+    nombre: string;
+}
+
+interface Categoria {
+    nombre: string;
+}
+
+interface Imagen {
+    iid: string;
+    titulo: string;
+    descripcion: string;
+    usuarios: Usuario[];
+    categorias: Categoria[];
+}
+
+interface ApiResponse {
+    imgs: Imagen[];
+    totalPages: number;
+    currentPage: number;
+}
 
 class ImageGallery {
     public currentPage: number;
@@ -13,7 +34,7 @@ class ImageGallery {
         this.currentPage = 1;
         this.category = urlParams.get('category') ?? '';
         this.author = urlParams.get('author') ?? '';
-        this.title = urlParams.get('title') ?? ''; 
+        this.title = urlParams.get('title') ?? '';
 
         const pageLimitParam = urlParams.get('pageLimit');
         this.limitPage = pageLimitParam !== null ? parseInt(pageLimitParam) : 6;
@@ -23,22 +44,26 @@ class ImageGallery {
         this.addPaginationEventListeners();
     }
 
-    async fetchImages(page: number) {
+    async fetchImages(page: number): Promise<void> {
         try {
             const response = await fetch(`${this.apiUrl}?page=${page}&category=${this.category}&author=${this.author}&title=${this.title}&pageLimit=${this.limitPage}`);
-            const data = await response.json();
-            console.log(data);
+            const data: ApiResponse = await response.json();
             this.renderImages(data.imgs);
             this.renderPagination(data.totalPages, data.currentPage);
-        } catch (error) {
-            console.error("Error al obtener imágenes:", error);
+        } catch (error: unknown) {
+            const imagesContainer: HTMLElement | null = document.getElementById("images-container");
+            if (imagesContainer) {
+                imagesContainer.innerHTML = `<div class='col-4 mb-3'> 
+                                                No se encontró ninguna fotografía...
+                                            </div>`;
+            }
         }
     }
 
-    renderImages(imgs: any[]) {
-        const imagesContainer = document.getElementById("images-container");
+    renderImages(imgs: Imagen[]): void {
+        const imagesContainer : HTMLElement | null = document.getElementById("images-container");
         if (imagesContainer) {
-            if(imgs.length > 0){
+            if (imgs.length > 0) {
                 imagesContainer.innerHTML = imgs.map(imagen => `
                     <div class='col-4 mb-3'>
                         <div class="card shadow-sm">
@@ -46,12 +71,12 @@ class ImageGallery {
                             <div class="card-body">
                                 <h5 class="card-title">${imagen.titulo}</h5>
                                 <p class="card-text">${imagen.descripcion}</p>
-                                <p class="card-text text-muted">Autor: ${imagen.usuarios.map((u: any) => u.nombre).join(", ")}</p>
+                                <p class="card-text text-muted">Autor: ${imagen.usuarios.map(u => u.nombre).join(", ")}</p>
                                 <p class="card-text">
                                     <small class="text-muted">
                                         Categorías: ${
                                             Array.isArray(imagen.categorias) && imagen.categorias.length > 0 
-                                            ? imagen.categorias.map((c: any) => c.nombre).join(", ") 
+                                            ? imagen.categorias.map(c => c.nombre).join(", ") 
                                             : "Sin categoría"
                                         }
                                     </small>
@@ -61,16 +86,16 @@ class ImageGallery {
                         </div>
                     </div>
                 `).join("");
-            }else{
+            } else {
                 imagesContainer.innerHTML = `<div class='col-4 mb-3'> 
-                                                No se encontro ninguna fotografia...
-                                            </div>`
+                                                No se encontró ninguna fotografía...
+                                            </div>`;
             }
         }
     }
 
-    renderPagination(totalPages: number, currentPage: number) {
-        const paginationContainer = document.getElementById("pagination");
+    renderPagination(totalPages: number, currentPage: number): void {
+        const paginationContainer: HTMLElement | null = document.getElementById("pagination");
         if (paginationContainer) {
             let paginationHTML = "";
 
@@ -92,13 +117,12 @@ class ImageGallery {
         }
     }
 
-    // Método para cambiar de página
-    changePage(page: number) {
+    changePage(page: number): void {
         this.fetchImages(page);
     }
 
-    addPaginationEventListeners() {
-        const paginationContainer = document.getElementById("pagination");
+    addPaginationEventListeners(): void {
+        const paginationContainer: HTMLElement | null = document.getElementById("pagination");
         if (paginationContainer) {
             paginationContainer.addEventListener("click", (event) => {
                 const target = event.target as HTMLElement;
@@ -114,7 +138,7 @@ class ImageGallery {
 const gallery = new ImageGallery("/api/imgs");
 
 document.querySelectorAll('.author').forEach(authorElement => {
-    authorElement.addEventListener('click', (event) => {
+    authorElement.addEventListener('click', () => {
         const author = authorElement.getAttribute('data-author') || "";
         gallery.author = author;
         gallery.currentPage = 1;
@@ -128,7 +152,7 @@ document.querySelectorAll('.author').forEach(authorElement => {
 });
 
 document.querySelectorAll('.category').forEach(categoryElement => {
-    categoryElement.addEventListener('click', (event) => {
+    categoryElement.addEventListener('click', () => {
         const category = categoryElement.getAttribute('data-category') || "";
         gallery.category = category;
         gallery.currentPage = 1;
@@ -141,7 +165,7 @@ document.querySelectorAll('.category').forEach(categoryElement => {
     });
 });
 
-document.querySelector('#deleteFilter')?.addEventListener('click',()=>{
+document.querySelector('#deleteFilter')?.addEventListener('click', () => {
     gallery.category = "";
     gallery.author = "";
     gallery.currentPage = 1;
@@ -150,4 +174,4 @@ document.querySelector('#deleteFilter')?.addEventListener('click',()=>{
     document.querySelectorAll('.category').forEach(item => item.classList.remove('bg-primary', 'text-white'));
     document.querySelectorAll('.author').forEach(item => item.classList.remove('bg-primary', 'text-white'));
     gallery.fetchImages(gallery.currentPage);
-})
+});

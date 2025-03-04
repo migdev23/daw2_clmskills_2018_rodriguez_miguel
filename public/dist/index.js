@@ -16,12 +16,16 @@ class ImageGallery {
         try {
             const response = await fetch(`${this.apiUrl}?page=${page}&category=${this.category}&author=${this.author}&title=${this.title}&pageLimit=${this.limitPage}`);
             const data = await response.json();
-            console.log(data);
             this.renderImages(data.imgs);
             this.renderPagination(data.totalPages, data.currentPage);
         }
         catch (error) {
-            console.error("Error al obtener imágenes:", error);
+            const imagesContainer = document.getElementById("images-container");
+            if (imagesContainer) {
+                imagesContainer.innerHTML = `<div class='col-4 mb-3'> 
+                                                No se encontró ninguna fotografía...
+                                            </div>`;
+            }
         }
     }
     renderImages(imgs) {
@@ -35,11 +39,11 @@ class ImageGallery {
                             <div class="card-body">
                                 <h5 class="card-title">${imagen.titulo}</h5>
                                 <p class="card-text">${imagen.descripcion}</p>
-                                <p class="card-text text-muted">Autor: ${imagen.usuarios.map((u) => u.nombre).join(", ")}</p>
+                                <p class="card-text text-muted">Autor: ${imagen.usuarios.map(u => u.nombre).join(", ")}</p>
                                 <p class="card-text">
                                     <small class="text-muted">
                                         Categorías: ${Array.isArray(imagen.categorias) && imagen.categorias.length > 0
-                    ? imagen.categorias.map((c) => c.nombre).join(", ")
+                    ? imagen.categorias.map(c => c.nombre).join(", ")
                     : "Sin categoría"}
                                     </small>
                                 </p>
@@ -51,7 +55,7 @@ class ImageGallery {
             }
             else {
                 imagesContainer.innerHTML = `<div class='col-4 mb-3'> 
-                                                No se encontro ninguna fotografia...
+                                                No se encontró ninguna fotografía...
                                             </div>`;
             }
         }
@@ -74,7 +78,6 @@ class ImageGallery {
             paginationContainer.innerHTML = paginationHTML;
         }
     }
-    // Método para cambiar de página
     changePage(page) {
         this.fetchImages(page);
     }
@@ -93,7 +96,7 @@ class ImageGallery {
 }
 const gallery = new ImageGallery("/api/imgs");
 document.querySelectorAll('.author').forEach(authorElement => {
-    authorElement.addEventListener('click', (event) => {
+    authorElement.addEventListener('click', () => {
         const author = authorElement.getAttribute('data-author') || "";
         gallery.author = author;
         gallery.currentPage = 1;
@@ -105,7 +108,7 @@ document.querySelectorAll('.author').forEach(authorElement => {
     });
 });
 document.querySelectorAll('.category').forEach(categoryElement => {
-    categoryElement.addEventListener('click', (event) => {
+    categoryElement.addEventListener('click', () => {
         const category = categoryElement.getAttribute('data-category') || "";
         gallery.category = category;
         gallery.currentPage = 1;
