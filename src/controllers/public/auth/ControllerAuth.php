@@ -84,6 +84,7 @@
                         empty(trim($_POST['email'])) || 
                         empty(trim($_POST['nombre'])) || 
                         empty(trim($_POST['password'])) ||
+                        empty(trim($_POST['repassword'])) ||
                         $_FILES['perfil']['error'] > 0
                     ) {
                         echo "Error: Faltan campos obligatorios.";
@@ -94,6 +95,13 @@
                     $email = trim($_POST['email']);
                     $nombre = trim($_POST['nombre']);
                     $password = trim($_POST['password']);
+                    $repassword = trim($_POST['repassword']);
+                    
+                    if($password != $repassword){
+                        echo 'Las contraseñas deben ser iguales';
+                        exit;
+                    }
+
                     $imagen = $_FILES['perfil'];
                 
                 
@@ -116,6 +124,7 @@
                 
 
                     $extension = strtolower(pathinfo($imagen['name'], PATHINFO_EXTENSION));
+
                     if ($extension !== 'jpg' && $extension !== 'jpeg') {
                         echo "Error: La imagen debe ser formato JPG.";
                         exit;

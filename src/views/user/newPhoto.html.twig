@@ -2,34 +2,48 @@
 
 {% block content %}
 <h1>Nueva Foto</h1>
-<form action="/newPhoto" method="POST" enctype="multipart/form-data">
-
+<form action="/newPhoto" method="POST" enctype="multipart/form-data" novalidate class="needs-validation">
     <div class="mb-3">
         <label for="titulo" class="form-label">Título</label>
         <input type="text" class="form-control" id="titulo" name="titulo" required>
+        <div class="invalid-feedback">
+            El título es necesario
+        </div>
     </div>
 
     <div class="mb-3">
         <label for="descripcion" class="form-label">Descripción</label>
         <textarea class="form-control" id="descripcion" name="descripcion" rows="4" required></textarea>
+        <div class="invalid-feedback">
+            La descripción es necesario
+        </div>
     </div>
 
     <div class="mb-3">
-        <label for="fichero" class="form-label">Fichero</label>
-        <input type="file" class="form-control" id="fichero" name="fichero" required>
+        <label for="fichero" class="form-label">Imagen</label>
+        <input type="file" class="form-control" id="fichero" name="fichero" accept=".png, .jpg, .jpeg, .gif" required>
+        <div class="invalid-feedback">
+            La imagen debe ser una imagen (.png, .jpg, .jpeg, .gif).
+        </div>
     </div>
-
 
     <div class="mb-3">
         <label for="latitud" class="form-label">Latitud</label>
         <input type="text" class="form-control" id="latitud" name="latitud" required>
+        <div class="invalid-feedback">
+            La latitud es necesario
+        </div>
     </div>
 
     <div class="mb-3">
         <label for="longitud" class="form-label">Longitud</label>
         <input type="text" class="form-control" id="longitud" name="longitud" required>
+        <div class="invalid-feedback">
+            La longitud es necesario
+        </div>
     </div>
 
     <button type="submit" class="btn btn-primary">Enviar</button>
+    <script src='/dist/bostrapValidation.js'></script>
 </form>
 {% endblock %}

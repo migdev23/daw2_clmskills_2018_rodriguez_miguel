@@ -2,22 +2,23 @@
 
 {% block content %}
                             <h1>Login</h1>
-                            <form action="/login" method="post">
+                            <form action="/login" method="post" class="needs-validation" novalidate>
                                 <div class="mb-3">
                                     <label for="email" class="form-label">Email:</label>
                                     <input type="email" id="email" name="email" class="form-control" required>
+                                    <div class="invalid-feedback">Introduce un correo válido.</div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="password" class="form-label">Contraseña:</label>
-                                    <input type="password" id="password" name="password" class="form-control" required>
+                                    <input type="password" id="password" name="password" class="form-control" required minlength="6">
+                                    <div class="invalid-feedback">Introduce una contraseña</div>
                                 </div>
-
-                                <div class="mb-3">
-                                    <label>Mantener la sesion activa:</label>
-                                    <input type='checkbox' name='mantenerSesion' checked>
+                                <div class="mb-3 form-check">
+                                    <input type='checkbox' class="form-check-input" id="mantenerSesion" name='mantenerSesion' checked>
+                                    <label class="form-check-label" for="mantenerSesion">Mantener la sesión activa</label>
                                 </div>
                                 <button type="submit" class="btn btn-primary w-100">Iniciar Sesión</button>
                             </form>
                             <a href='/register'>Registrate aqui</a>
-
+                            <script src='/dist/bostrapValidation.js'></script>
 {% endblock %}

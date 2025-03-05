@@ -3,13 +3,13 @@
     <a href='/' class="navbar-brand">Skills 2018</a>
     <div>
       <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modal">
-        Buscar
+        <i class="bi bi-search text-white"></i> Buscar
       </button>
       {% if logeado %}
-        <a href="/profile" class="btn btn-secondary">Perfil</a>
-        <a href="/logout" class="btn btn-danger">Cerrar Sesión</a>
+        <a href="/profile" class="btn btn-secondary"><i class="bi bi-person text-white"></i> Perfil</a>
+        <a href="/logout" class="btn btn-danger"><i class="bi bi-box-arrow-right text-white"></i> Cerrar Sesión</a>
       {% else %}
-        <a href='/login' class="btn btn-secondary">Iniciar Sesión</a>
+        <a href='/login' class="btn btn-secondary"><i class="bi bi-box-arrow-right text-white"></i> Iniciar Sesión</a>
       {% endif %}
     </div>
   </div>
@@ -20,31 +20,34 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="searchModalLabel">Buscar</h5>
+        <h5 class="modal-title" id="searchModalLabel"><i class="bi bi-search"></i> Buscar</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <!-- Formulario que envía la búsqueda a la página principal -->
-        <form action="/" method="get">
+        <form id="busquedaForm" action="/" method="get" novalidate>
           <div class="mb-3">
             <label for="title" class="form-label">Título</label>
-            <input type="text" class="form-control" id="title" name="title" value="">
+            <input type="text" class="form-control" id="title" name="title">
+            <div class="invalid-feedback">Por favor, rellene este campo o alguno de los otros.</div>
           </div>
           <div class="mb-3">
             <label for="category" class="form-label">Categoría</label>
-            <input type="text" class="form-control" id="category" name="category" value="">
+            <input type="text" class="form-control" id="category" name="category">
+            <div class="invalid-feedback">Por favor, rellene este campo o alguno de los otros.</div>
           </div>
           <div class="mb-3">
             <label for="author" class="form-label">Autor</label>
-            <input type="text" class="form-control" id="author" name="author" value="">
+            <input type="text" class="form-control" id="author" name="author">
+            <div class="invalid-feedback">Por favor, rellene este campo o alguno de los otros.</div>
           </div>
           <div class="mb-3">
             <label for="pageLimit" class="form-label">Límite de Páginas</label>
-            <input type="number" class="form-control" id="pageLimit" name="pageLimit" value="">
+            <input type="number" class="form-control" id="pageLimit" name="pageLimit">
+            <div class="invalid-feedback">Por favor, rellene este campo o alguno de los otros.</div>
           </div>
-          <!-- Botón de búsqueda -->
           <button type="submit" class="btn btn-primary">Buscar</button>
         </form>
+        <script src='/dist/busquedaValidation.js'></script>
       </div>
     </div>
   </div>

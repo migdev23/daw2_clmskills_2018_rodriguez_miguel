@@ -2,23 +2,34 @@
 
 {% block content %}
             <h1>Register</h1>
-            <form action="/register" method="POST" enctype="multipart/form-data">
+            <form action="/register" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" name="email">
+                    <input type="email" class="form-control" id="email" name="email" required>
+                    <div class="invalid-feedback">Por favor, introduce un correo válido.</div>
                 </div>
                 <div class="mb-3">
                     <label for="nombre" class="form-label">Nombre</label>
-                    <input type="text" class="form-control" id="nombre" name="nombre">
+                    <input type="text" class="form-control" id="nombre" name="nombre" required minlength="3">
+                    <div class="invalid-feedback">El nombre debe tener al menos 3 caracteres.</div>
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Contraseña</label>
-                    <input type="password" class="form-control" id="password" name="password">
+                    <input type="password" class="form-control" id="password" name="password" required minlength="6">
+                    <div class="invalid-feedback">La contraseña debe tener al menos 6 caracteres.</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="repassword" class="form-label">Confirmar contraseña</label>
+                    <input type="password" class="form-control" id="repassword" name="repassword" required minlength="6">
+                    <div class="invalid-feedback">La contraseña debe ser igual a la anterior.</div>
                 </div>
                 <div class="mb-3">
                     <label for="perfil" class="form-label">Imagen de Perfil (archivo jpg)</label>
-                    <input type="file" class="form-control" id="perfil" name="perfil" accept="image/*">
+                    <input type="file" class="form-control" id="perfil" name="perfil" accept="image/jpeg" required>
+                    <div class="invalid-feedback">Por favor, sube una imagen en formato JPG.</div>
                 </div>
                 <button type="submit" class="btn btn-primary">Registrar</button>
-        </form>
+            </form>
+            <script src='/dist/registerValidation.js'></script>
 {% endblock %}
