@@ -1,33 +1,3 @@
-/*
-    * Este script está diseñado para detectar cuándo un usuario intenta cerrar una pestaña o el navegador,
-    * y realiza una solicitud para cerrar sesión en el servidor. Esto se logra utilizando el almacenamiento
-    * compartido entre pestañas (localStorage) y los eventos de los navegadores.
-    * 
-    * El proceso funciona de la siguiente manera:  
-    * 
-    * 1. **Antes de cerrar la pestaña** (`beforeunload`):
-    *    - Cuando el usuario intenta cerrar o recargar la pestaña, el valor `isBrowserClosing` se establece en `localStorage`,
-    *      indicando que el navegador está a punto de cerrarse.
-    *    - Este valor se elimina después de un breve retraso para permitir que otras pestañas detecten el cambio.
-    *
-    * 2. **Detección del cambio en otras pestañas** (`storage`):
-    *    - El evento `storage` se dispara en todas las pestañas cuando el valor de `isBrowserClosing` cambia en `localStorage`.
-    *    - Si alguna pestaña detecta que otra pestaña está cerrando (cuando `isBrowserClosing` se establece en `true`),
-    *      entonces realiza la accion deseada`.
-    *
-    * 3. **Cuando la página se oculta o recarga** (`pagehide`):
-    *    - Si el valor `isBrowserClosing` está presente en `localStorage`, indica que el navegador o pestaña está cerrándose,
-    *      y se realiza la solicitud de cierre de sesión a `/logout` para finalizar la sesión antes de que la página sea descargada.
-    *
-    * La clave de esta implementación es la sincronización de pestañas mediante el uso de `localStorage`, que permite que
-    * las pestañas compartan el estado de si el navegador se está cerrando, y que la lógica de cierre de sesión se ejecute
-    * en todas las pestañas relevantes.
-    *
-    * Nota importante: La opción `keepalive: true` en la solicitud `fetch` asegura que la petición de cierre de sesión se
-    * complete, incluso si el navegador está cerrado, evitando que se cancele durante este proceso.
-*/
-
-
 window.addEventListener('beforeunload', function (event) {
     localStorage.setItem('isBrowserClosing', 'true');
 
@@ -58,6 +28,42 @@ window.addEventListener('pagehide', function (event) {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
             keepalive: true 
+        });
+    }
+});
+
+//COOKIES
+
+const crearCookie = (name: string, value: string, days?: number): void => {
+    let expires: string = "";
+    if (days) {
+        const date: Date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = `${name}=${value}${expires}; path=/`;
+}
+
+const obtenerCookie = (name: string): string | null => {
+    const nameEQ: string = `${name}=`;
+    const ca: string[] = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c: string = ca[i];
+        while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    if (!obtenerCookie("aceptada")) {
+        const cookieModal = new bootstrap.Modal(document.getElementById('cookieModal') as HTMLElement);
+        cookieModal.show();
+
+        const acceptCookiesButton = document.getElementById("acceptCookies") as HTMLElement;
+        acceptCookiesButton.addEventListener("click", () => {
+            crearCookie("aceptada", "true", 365);
+            cookieModal.hide();
         });
     }
 });

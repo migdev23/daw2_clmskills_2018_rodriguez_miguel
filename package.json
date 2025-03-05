@@ -9,7 +9,10 @@
     "watch": "tsc --watch",
     "clean": "rm -rf public/dist"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@types/bootstrap": "^5.2.10",
+    "bootstrap": "^5.3.3"
+  },
   "devDependencies": {
     "concurrently": "^8.2.2"
   }

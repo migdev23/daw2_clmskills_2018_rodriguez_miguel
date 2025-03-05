@@ -5,7 +5,7 @@
         const password: HTMLInputElement | null = form.querySelector('#password');
         const repassword: HTMLInputElement | null = form.querySelector('#repassword');
 
-        const validarPassword = () => {
+        const validarPassword = () :void => {
             if (password && repassword) {
                 if (password.value !== repassword.value) {
                     repassword.setCustomValidity('Las contraseñas no coinciden.');
