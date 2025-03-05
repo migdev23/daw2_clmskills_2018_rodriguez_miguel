@@ -3,13 +3,13 @@ const form = document.getElementById('busquedaForm') as HTMLFormElement;
 if (form) {
     form.addEventListener('submit', function (event: Event): void {
         event.preventDefault();
-        let isValid = false;
+        let isValid: Boolean = false;
         
         const campos: string[] = ['title', 'category', 'author', 'pageLimit'];
         
-        campos.forEach(campoId => {
+        campos.forEach((campoId: string) => {
             const input = document.getElementById(campoId) as HTMLInputElement;
-            input.classList.remove('is-invalid');
+            input.classList.remove('is-invalid', 'is-valid');
             input.setCustomValidity('');
         });
 
@@ -22,8 +22,9 @@ if (form) {
         }
 
         if (!isValid) {
-            campos.forEach(campoId => {
+            campos.forEach((campoId: string) => {
                 const input = document.getElementById(campoId) as HTMLInputElement;
+                input.setCustomValidity('Rellen algun campo');
                 input.classList.add('is-invalid');
             });
             

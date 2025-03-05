@@ -5,9 +5,9 @@ if (form) {
         event.preventDefault();
         let isValid = false;
         const campos = ['title', 'category', 'author', 'pageLimit'];
-        campos.forEach(campoId => {
+        campos.forEach((campoId) => {
             const input = document.getElementById(campoId);
-            input.classList.remove('is-invalid');
+            input.classList.remove('is-invalid', 'is-valid');
             input.setCustomValidity('');
         });
         for (const campoId of campos) {
@@ -18,8 +18,9 @@ if (form) {
             }
         }
         if (!isValid) {
-            campos.forEach(campoId => {
+            campos.forEach((campoId) => {
                 const input = document.getElementById(campoId);
+                input.setCustomValidity('Rellen algun campo');
                 input.classList.add('is-invalid');
             });
             form.classList.add('was-validated');
