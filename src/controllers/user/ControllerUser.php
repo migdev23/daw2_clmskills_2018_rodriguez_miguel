@@ -2,10 +2,10 @@
 namespace App\controllers\user;
 
 use App\models\Database;
-use App\Models\Imagen;
-use App\Models\ImagenesCategorias;
-use App\Models\ImagenesRelacionadas;
-use App\Models\ImagenesUsuarios;
+use App\models\Imagen;
+use App\models\ImagenesCategorias;
+use App\models\ImagenesRelacionadas;
+use App\models\ImagenesUsuarios;
 use App\models\Usuario;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;

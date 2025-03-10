@@ -2,17 +2,35 @@ services:
   php-app:
     build: 
       context: .
-      dockerfile: Dockerfile.yml
+      dockerfile: docker_images/php/DockerFile.yml
     tty: true
+    depends_on:
+      - mariadb
     ports:
       - 3333:8000
-
+    networks:
+      - external-network
     command: bash -c "cd /app && composer start"
+
 
 
   mariadb:
     image: mariadb:11
-    tty: true
     environment:
-      - MYSQL_USER=root
-      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ROOT_PASSWORD=2025_skills
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./volumes/mariadb_data:/var/lib/mysql
+      - ./volumes/db.sql:/docker-entrypoint-initdb.d/db.sql
+      - ./volumes/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - external-network
+
+    
+
+volumes:
+  mariadb_data:
+
+networks:
+  external-network:

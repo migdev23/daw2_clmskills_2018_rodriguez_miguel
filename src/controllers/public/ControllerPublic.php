@@ -2,7 +2,7 @@
 
     namespace App\controllers\public;
 
-    use App\Models\Categoria;
+    use App\models\Categoria;
     use Twig\Loader\FilesystemLoader;
 
     use Twig\Environment;

@@ -3,7 +3,7 @@
 namespace App\controllers\api;
 use App\models\Database;
 use App\models\Imagen;
-use App\Models\Usuario;
+use App\models\Usuario;
 
 class ImagenesApi {
     private $db;
