@@ -4,6 +4,7 @@ services:
       context: .
       dockerfile: docker_images/php/DockerFile.yml
     tty: true
+    container_name: PHP
     depends_on:
       - mariadb
     ports:
@@ -17,7 +18,7 @@ services:
   mariadb:
     image: mariadb:11
     environment:
-      - MYSQL_ROOT_PASSWORD=2025_skills
+      - MYSQL_ROOT_PASSWORD=${DB_PASS}
     ports:
       - "3306:3306"
     volumes:
