@@ -19,12 +19,14 @@ services:
     image: mariadb:11
     environment:
       - MYSQL_ROOT_PASSWORD=${DB_PASS}
+      - MYSQL_DATABASE=${BD_NAME}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASS}
     ports:
       - "3306:3306"
     volumes:
       - ./volumes/mariadb_data:/var/lib/mysql
       - ./volumes/db.sql:/docker-entrypoint-initdb.d/db.sql
-      - ./volumes/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - external-network
 
