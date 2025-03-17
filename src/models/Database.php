@@ -36,6 +36,7 @@ class Database{
             $capsule->getConnection()->getPdo();
 
         } catch (\Exception $th) {
+            error_log($th->getMessage());
             echo 'No hay conexion a la base de datos';
             exit;
         }
